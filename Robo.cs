@@ -10,7 +10,6 @@ using SuperConvert.Extensions;
 using System.Data;
 using System.IO;
 using NUnit.Framework.Internal;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace atentobr_n3_automacao_teste
 {
@@ -51,6 +50,7 @@ namespace atentobr_n3_automacao_teste
             Thread.Sleep(1000);
             ClicaGerarPessoa();
             Thread.Sleep(1000);
+            DownloadJsonObject();
             CreateFile();
             CloseDriver();
         }
@@ -63,15 +63,24 @@ namespace atentobr_n3_automacao_teste
         private void CreateFile()
         {
             string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data\\";
-            string file = "test.txt";
+            string pathDownload = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\";
+            string file = "data.json";
             string text = SaveJsonObject();
 
+            // converte arquivo gerado na pasta data
+            ConvertFile(path, file, text);
+            // converte download
+            ConvertFile(pathDownload, file, text);
+        }
+
+        private static void ConvertFile(string path, string file, string text)
+        {
             try
             {
                 using FileStream fs = File.Create(path + file);
                 byte[] info = new UTF8Encoding(true).GetBytes(text);
                 fs.Write(info, 0, info.Length);
-                ConvertJsonToCsv(text, path, "test");
+                ConvertJsonToCsv(text, path, "data");
             }
 
             catch (Exception ex)
@@ -83,6 +92,11 @@ namespace atentobr_n3_automacao_teste
         private string SaveJsonObject()
         {
             return FindIWebElement("dados_json")?.GetAttribute("value");
+        }
+
+        private void DownloadJsonObject()
+        {
+            FindIWebElement("button.button.button--download.output-btn", "cssSelector")?.Click();
         }
 
         private IWebElement FindIWebElement(string idElemento, string identificador = "id")
