@@ -12,6 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="drivers\chromedriver.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="drivers\chromedriver.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
@@ -27,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="drivers\" />
     <Folder Include="data\" />
   </ItemGroup>
 
